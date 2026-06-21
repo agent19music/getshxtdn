@@ -2,7 +2,7 @@
 
 A feature-complete, secure React Native mobile task management app built with Expo 56 and a Node.js/Express backend. Built for the Spearhead frontend assessment.
 
-> **Product name:** The assessment brief permits a custom product identity ("build a feature-complete, secure React Native mobile application") without mandating a specific name. I chose **GSD** to give the project a distinct brand, design system (Mavuno), and personality rather than shipping a generic "Todo App."
+> **Product name:** The assessment brief permits a custom product identity ("build a feature-complete, secure React Native mobile application") without mandating a specific name. I chose **GSD** to give the project a distinct brand, design system , and personality rather than shipping a generic "Todo App."
 
 ---
 
@@ -149,7 +149,7 @@ File-based routing via Expo Router. Auth guard in the root layout redirects base
 
 ### Design System
 
-The Mavuno design system (`constants/theme.ts`) provides typed tokens for colors (light/dark), spacing (8px grid), typography (Manrope), radii, and shadows. All components use `StyleSheet.create` — no style libraries.
+The design system (`constants/theme.ts`) provides typed tokens for colors (light/dark), spacing (8px grid), typography (Manrope), radii, and shadows. All components use `StyleSheet.create` — no style libraries.
 
 ---
 

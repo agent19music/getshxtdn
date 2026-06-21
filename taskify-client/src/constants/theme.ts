@@ -1,5 +1,5 @@
 /**
- * Mavuno Design System — StyleSheet-compatible tokens.
+ *  Design System — StyleSheet-compatible tokens.
  * Source of truth: DESIGN.md. No deviation.
  */
 
