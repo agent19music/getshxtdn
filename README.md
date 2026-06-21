@@ -1,4 +1,4 @@
-# GSD (Get Stuff Done)
+# GSD (Get Shit Done)
 
 A feature-complete, secure React Native mobile task management app built with Expo 56 and a Node.js/Express backend. Built for the Spearhead frontend assessment.
 
