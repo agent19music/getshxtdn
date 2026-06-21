@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #dddcd7; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', sans-serif;">
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #dddcd7; padding: 40px 20px;">
+        <tbody>
+            <tr>
+                <td align="center">
+
+                    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(42, 59, 25, 0.08); overflow: hidden;">
+
+                        <tbody>
+                            <tr>
+                                <td style="padding: 48px 40px 24px 40px;">
+                                    <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #2a3b19; line-height: 1.3;">
+                                        Your Pending Tasks Digest
+                                    </h1>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 0 40px;">
+
+                                    <p style="margin: 0 0 24px 0; font-size: 16px; color: #37352f; line-height: 1.6;">
+                                        Hi <strong>{{userName}}</strong>,
+                                    </p>
+
+                                    <p style="margin: 0 0 32px 0; font-size: 16px; color: #37352f; line-height: 1.6;">
+                                        Here is a quick summary of your outstanding tasks that need attention. Keep up
+                                        the great work!
+                                    </p>
+
+                                    <div style="margin-bottom: 24px;">
+                                        <table width="100%" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                {{taskRows}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 0 40px 40px 40px;">
+                                    <p style="margin: 0 0 12px 0; font-size: 16px; color: #37352f; line-height: 1.6;">
+                                        Best regards,
+                                    </p>
+
+                                    <table cellpadding="0" cellspacing="0" style="margin: 0 0 32px 0;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="vertical-align: middle; padding-right: 14px;">
+                                                    <img src="https://pub-8ea5c2fb30814a8ea5a4726bc8a453d3.r2.dev/gsd-logo-light.png" alt="GSD" style="display: block; width: 48px; height: auto; object-fit: contain;">
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <p style="margin: 0; font-size: 16px; color: #37352f; line-height: 1.5;">
+                                                        <strong>The GSD Team</strong><br>
+                                                        <span style="color: #787774; font-size: 14px;">Uzski Corp</span><br>
+                                                        <a href="mailto:hello@uzskicorp.agency" style="color: #2a3b19; text-decoration: none; font-size: 14px; font-weight: 500;">hello@uzskicorp.agency</a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div style="border-top: 1px solid #dddcd7; padding-top: 24px;">
+                                        <p style="margin: 0 0 8px 0; font-size: 12px; color: #9ca3af; line-height: 1.5; text-align: center;">
+                                            Uzski Corp &bull; Abc Place Nairobi, Waiyaki Wy, Nairobi
+                                        </p>
+                                        <p style="margin: 0; font-size: 12px; color: #9ca3af; line-height: 1.5; text-align: center;">
+                                            You are receiving this email because you opted into task digests in GSD.
+                                            <a href="{{unsubscribeUrl}}" style="color: #787774; text-decoration: underline;">Update preferences
+                                                or unsubscribe</a>.
+                                        </p>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body></html>

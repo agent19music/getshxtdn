@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "Gsd",
+    "slug": "gsd",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/gsd-logo.png",
+    "scheme": "gsd",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": "./assets/images/gsd-logo.png"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/gsd-logo.png",
+        "monochromeImage": "./assets/images/gsd-logo.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "taskify.uzskicorp.client",
+      "softwareKeyboardLayoutMode": "resize"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#dddcd7",
+          "image": "./assets/images/gsd-splash-light.png",
+          "dark": {
+            "backgroundColor": "#2a3b19",
+            "image": "./assets/images/gsd-splash-dark.png"
+          }
+        }
+      ],
+      "expo-secure-store",
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-notifications",
+        {
+          "color": "#208AEF",
+          "androidMode": "default"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
