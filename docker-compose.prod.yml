@@ -18,6 +18,8 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    environment:
+      - PORT=3000
     volumes:
       - /opt/taskify/apk:/app/public/apk
     env_file:

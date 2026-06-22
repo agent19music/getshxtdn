@@ -122,6 +122,8 @@ jobs:
             echo "    restart: always" >> docker-compose.prod.yml
             echo "    ports:" >> docker-compose.prod.yml
             echo "      - '3000:3000'" >> docker-compose.prod.yml
+            echo "    environment:" >> docker-compose.prod.yml
+            echo "      - PORT=3000" >> docker-compose.prod.yml
             echo "    volumes:" >> docker-compose.prod.yml
             echo "      - /opt/taskify/apk:/app/public/apk" >> docker-compose.prod.yml
             echo "    env_file:" >> docker-compose.prod.yml
