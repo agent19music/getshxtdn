@@ -66,6 +66,7 @@ export default function Home() {
               height={48}
               className="h-12 w-auto"
               priority
+              unoptimized
             />
           </div>
 
@@ -85,7 +86,8 @@ export default function Home() {
               Watch Demo
             </button>
             <a
-              href="#"
+              href="https://pub-8ea5c2fb30814a8ea5a4726bc8a453d3.r2.dev/gsd-v1.apk"
+              download
               className="inline-flex items-center justify-center h-12 px-6 rounded-full bg-[#171717] text-[#F5F5F5] font-button text-button hover:bg-primary-hover transition-colors duration-200 w-full sm:w-auto"
             >
               <span className="material-symbols-outlined mr-2 text-[20px]">android</span>
@@ -150,6 +152,7 @@ export default function Home() {
                 width={40}
                 height={40}
                 className="inline-block rounded-full"
+                unoptimized
               />
             </a>
           </p>
@@ -166,6 +169,7 @@ export default function Home() {
               width={80}
               height={24}
               className="h-6 w-auto animate-fade-in"
+              unoptimized
             />
           </div>
           <div className="flex gap-space-lg mb-space-md md:mb-0">
