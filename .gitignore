@@ -1,3 +1,42 @@
 .DS_Store
 *.log
 .env
+.env.*
+!.env.example
+
+# Packages / dependencies
+node_modules/
+/jspm_packages/
+
+# Next.js build output
+.next/
+out/
+
+# Development / IDE folders
+.agents/
+.claude/
+.cursor/
+.idea/
+.vscode/
+
+# SQLite databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+data/
+
+# OS metadata
+Thumbs.db
+
+# Documentation / Assessments
+Technical Assessment_*
+*.pdf
+oauth.md
+
+# Agent Lockfiles
+skills-lock.json
+
+# Caddy configs
+Caddyfile*
+caddyfile*

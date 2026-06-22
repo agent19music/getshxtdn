@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    image: ${API_IMAGE}
+    container_name: taskify-api
+    restart: always
+    ports:
+      - "5001:5000"
+    volumes:
+      - /opt/taskify/data:/app/data
+    env_file:
+      - .env.prod
+
+  landing:
+    image: ${LANDING_IMAGE}
+    container_name: taskify-landing
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - /opt/taskify/apk:/app/public/apk
+    env_file:
+      - .env.prod

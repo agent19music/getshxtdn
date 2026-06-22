@@ -1,0 +1,140 @@
+name: Taskify CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Trigger deploy on pushes to main (adjust to your prod branch if needed)
+  pull_request:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  # We'll use separate image names for API and Landing
+  API_IMAGE_NAME: ${{ github.repository }}/api
+  LANDING_IMAGE_NAME: ${{ github.repository }}/landing
+
+jobs:
+  # ------------------------------------------------------------------
+  # JOB 1: BUILD & PUSH DOCKER IMAGES TO GHCR
+  # ------------------------------------------------------------------
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build & Push API Image
+      - name: Extract metadata for API
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push API Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./taskify-apis
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+
+      # Build & Push Landing Image
+      - name: Extract metadata for Landing
+        id: meta-landing
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.LANDING_IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push Landing Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./landing
+          push: true
+          tags: ${{ steps.meta-landing.outputs.tags }}
+          labels: ${{ steps.meta-landing.outputs.labels }}
+
+  # ------------------------------------------------------------------
+  # JOB 2: DEPLOY TO DIGITALOCEAN VM VIA SSH
+  # ------------------------------------------------------------------
+  deploy-prod-ssh:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          IMAGE_TAG: sha-${{ github.sha }}
+          REGISTRY: ghcr.io
+          API_IMAGE_NAME: ${{ github.repository }}/api
+          LANDING_IMAGE_NAME: ${{ github.repository }}/landing
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          passphrase: ${{ secrets.DO_PASSPHRASE }}
+          envs: IMAGE_TAG,REGISTRY,API_IMAGE_NAME,LANDING_IMAGE_NAME
+          script: |
+            # 1. Login to GHCR so Docker can pull images
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # 2. Navigate to project folder
+            cd /opt/taskify/app
+            
+            # 3. Pull the specific images we just built (lowercased)
+            API_IMAGE=$(echo $REGISTRY/$API_IMAGE_NAME:$IMAGE_TAG | tr '[:upper:]' '[:lower:]')
+            LANDING_IMAGE=$(echo $REGISTRY/$LANDING_IMAGE_NAME:$IMAGE_TAG | tr '[:upper:]' '[:lower:]')
+            
+            docker pull $API_IMAGE
+            docker pull $LANDING_IMAGE
+            
+            # 4. Generate the image override file to pin current tags
+            echo "services:" > docker-compose.image.yml
+            echo "  api:" >> docker-compose.image.yml
+            echo "    image: $API_IMAGE" >> docker-compose.image.yml
+            echo "  landing:" >> docker-compose.image.yml
+            echo "    image: $LANDING_IMAGE" >> docker-compose.image.yml
+
+            # 5. Make sure SQLite and APK directories exist on host
+            mkdir -p /opt/taskify/data /opt/taskify/apk
+
+            # 6. Run migrations inside the newly pulled API image
+            # Mounting host /opt/taskify/data to /app/data so the SQLite file persists
+            docker run --rm \
+              --env-file .env.prod \
+              -v /opt/taskify/data:/app/data \
+              --entrypoint npm \
+              $API_IMAGE run setup
+            
+            # 7. Restart the services (Rolling update)
+            docker compose -f docker-compose.prod.yml -f docker-compose.image.yml --env-file .env.prod up -d
+            
+            # 8. Verify Health (adjust endpoints if different)
+            echo "Waiting for health check..."
+            sleep 10
+            if curl --fail http://localhost:5001/health; then
+              echo "API Health check passed!"
+            else
+              echo "API Health check failed!"
+              exit 1
+            fi
+
+            # 9. Cleanup old images
+            docker image prune -f
