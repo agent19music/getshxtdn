@@ -105,31 +105,27 @@ jobs:
             docker pull $API_IMAGE
             docker pull $LANDING_IMAGE
             
-            # 4. Generate the base docker-compose.prod.yml and image override files
-            cat << 'EOF' > docker-compose.prod.yml
-version: '3.8'
-
-services:
-  api:
-    container_name: taskify-api
-    restart: always
-    ports:
-      - "5001:5000"
-    volumes:
-      - /opt/taskify/data:/app/data
-    env_file:
-      - .env.prod
-
-  landing:
-    container_name: taskify-landing
-    restart: always
-    ports:
-      - "3000:3000"
-    volumes:
-      - /opt/taskify/apk:/app/public/apk
-    env_file:
-      - .env.prod
-EOF
+            # 4. Generate the base docker-compose.prod.yml
+            echo "version: '3.8'" > docker-compose.prod.yml
+            echo "services:" >> docker-compose.prod.yml
+            echo "  api:" >> docker-compose.prod.yml
+            echo "    container_name: taskify-api" >> docker-compose.prod.yml
+            echo "    restart: always" >> docker-compose.prod.yml
+            echo "    ports:" >> docker-compose.prod.yml
+            echo "      - '5001:5000'" >> docker-compose.prod.yml
+            echo "    volumes:" >> docker-compose.prod.yml
+            echo "      - /opt/taskify/data:/app/data" >> docker-compose.prod.yml
+            echo "    env_file:" >> docker-compose.prod.yml
+            echo "      - .env.prod" >> docker-compose.prod.yml
+            echo "  landing:" >> docker-compose.prod.yml
+            echo "    container_name: taskify-landing" >> docker-compose.prod.yml
+            echo "    restart: always" >> docker-compose.prod.yml
+            echo "    ports:" >> docker-compose.prod.yml
+            echo "      - '3000:3000'" >> docker-compose.prod.yml
+            echo "    volumes:" >> docker-compose.prod.yml
+            echo "      - /opt/taskify/apk:/app/public/apk" >> docker-compose.prod.yml
+            echo "    env_file:" >> docker-compose.prod.yml
+            echo "      - .env.prod" >> docker-compose.prod.yml
 
             echo "services:" > docker-compose.image.yml
             echo "  api:" >> docker-compose.image.yml
