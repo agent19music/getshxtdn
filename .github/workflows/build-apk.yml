@@ -56,19 +56,37 @@ jobs:
           npx expo prebuild --platform android
 
       - name: Build Release APK
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
         run: |
           cd taskify-client/android
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease -x lintVitalAnalyzeRelease -x lintVitalReportRelease --no-daemon
+
+      - name: Find and rename APK
+        run: |
+          APK_PATH=$(find taskify-client/android -name "*.apk" -path "*/release/*" | head -1)
+          echo "Found APK at: $APK_PATH"
+          if [ -z "$APK_PATH" ]; then
+            echo "ERROR: No APK found!"
+            find taskify-client/android -name "*.apk" || true
+            exit 1
+          fi
+          cp "$APK_PATH" taskify-client/gsd-${{ github.ref_name }}.apk
+          echo "APK_FILE=taskify-client/gsd-${{ github.ref_name }}.apk" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: taskify-client/android/app/build/outputs/apk/release/app-release.apk
-          name: Release ${{ github.ref_name }}
+          files: ${{ env.APK_FILE }}
+          name: GSD ${{ github.ref_name }}
           body: |
-            ## Taskify Release ${{ github.ref_name }}
-            
-            Compiled APK asset attached below.
+            ## GSD (Get Shit Done) — ${{ github.ref_name }}
+
+            ### Download
+            Grab the APK below and install it on your Android device.
+
+            ### What's New
+            - Initial release
           draft: false
           prerelease: false
         env:
