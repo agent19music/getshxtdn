@@ -10,6 +10,11 @@ const hostname = Platform.select({
   default: IOS_HOST,
 });
 
-export const API_BASE_URL = `http://${hostname}:3000`;
+// If the hostname looks like a production domain name (e.g. contains api.gsd.uzskicorp.agency), use https and no port
+const isProduction = hostname.includes('.') && !hostname.endsWith('.local') && !hostname.match(/^\d+\.\d+\.\d+\.\d+$/);
+
+export const API_BASE_URL = isProduction 
+  ? `https://${hostname}` 
+  : `http://${hostname}:3000`;
 
 export const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ?? '';
