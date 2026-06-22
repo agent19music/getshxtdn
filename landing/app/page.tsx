@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import VideoModal from './components/VideoModal';
+import Tooltip from './components/Tooltip';
 
 export default function Home() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -21,15 +22,27 @@ export default function Home() {
           {/* Logo gone from top navigation */}
           <div />
           <div className="flex items-center gap-space-md">
-            <a className="font-body text-body text-secondary hover:text-primary-hover transition-colors duration-200" href="#">Product</a>
-            <a
-              className="font-body text-body text-secondary hover:text-primary-hover transition-colors duration-200"
-              href="https://sean.uzskicorp.agency?utm=resume"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Tooltip
+              content={
+                <Image
+                  src="/assets/portfolio.webp"
+                  alt="Sean portfolio preview"
+                  width={1385}
+                  height={1322}
+                  className="rounded-sm"
+                  unoptimized
+                />
+              }
             >
-              Hire Me
-            </a>
+              <a
+                className="font-body text-body text-secondary hover:text-primary-hover transition-colors duration-200"
+                href="https://sean.uzskicorp.agency?utm=resume"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Hire Me
+              </a>
+            </Tooltip>
             <button
               onClick={() => setIsVideoOpen(true)}
               className="font-button text-button bg-primary text-on-primary px-space-md py-space-sm rounded-full hover:bg-primary-hover transition-colors duration-200 cursor-pointer"
