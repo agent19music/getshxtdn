@@ -60,7 +60,7 @@ jobs:
           GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
         run: |
           cd taskify-client/android
-          ./gradlew assembleRelease -x lintVitalAnalyzeRelease -x lintVitalReportRelease --no-daemon
+          ./gradlew assembleRelease -x lintVitalRelease --no-daemon
 
       - name: Find and rename APK
         run: |
